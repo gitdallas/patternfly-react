@@ -5,9 +5,10 @@ import scrollStyles from '@patternfly/react-styles/css/components/Table/table-sc
 import { info } from '../Table/utils/decorators/info';
 import { sortable, sortableFavorites } from '../Table/utils/decorators/sortable';
 import { selectable } from '../Table/utils/decorators/selectable';
+import { collapsible } from '../Table/utils/decorators/collapsible';
 import { cellWidth } from './../Table/utils/decorators/cellWidth';
 import { Visibility, classNames } from './../Table/utils/decorators/classNames';
-import { ThInfoType, ThSelectType, ThSortType, formatterValueType } from '../Table/base/types';
+import { ThInfoType, ThSelectType, ThExpandType, ThSortType, formatterValueType } from '../Table/base/types';
 import { mergeProps } from '../Table/base/merge-props';
 import { IVisibility } from '../Table/utils/decorators/classNames';
 import { Tooltip } from '@patternfly/react-core/dist/esm/components/Tooltip/Tooltip';
@@ -24,6 +25,8 @@ export interface ThProps
   dataLabel?: string;
   /** Renders a checkbox select so that all row checkboxes can be selected/deselected */
   select?: ThSelectType;
+  /** Renders a chevron so that all row chevrons can be expanded/collapsed */
+  expand?: ThExpandType;
   /** Formats the header so that its column will be sortable */
   sort?: ThSortType;
   /**
@@ -61,6 +64,7 @@ const ThBase: React.FunctionComponent<ThProps> = ({
   sort = null,
   modifier,
   select = null,
+  expand = null,
   tooltip = '',
   onMouseEnter: onMouseEnterProp = () => {},
   width,
@@ -103,7 +107,7 @@ const ThBase: React.FunctionComponent<ThProps> = ({
       });
     }
   }
-  const selectParams = select
+  const selectParams = false && select
     ? selectable(children as IFormatterValueType, {
         column: {
           extraParams: {
@@ -114,6 +118,18 @@ const ThBase: React.FunctionComponent<ThProps> = ({
           }
         }
       })
+    : null;
+  const expandableParams = expand
+    ? collapsible(children as IFormatterValueType, {
+      column: {
+        extraParams: {
+          onCollapse: expand?.onToggle,
+          selectVariant: 'checkbox', //TODO: add new variet?
+          allRowsExpanded: expand.isExpanded,
+          isHeaderExpandDisabled: !!expand.isHeaderExpandDisabled
+        }
+      }
+    })
     : null;
   const widthParams = width ? cellWidth(width)() : null;
   const visibilityParams = visibility
