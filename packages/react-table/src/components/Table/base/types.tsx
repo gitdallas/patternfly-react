@@ -163,13 +163,13 @@ export interface ThSelectType {
   isHeaderSelectDisabled?: boolean;
 }
 
-export interface ThExpandType {
+export interface ThCollapseType {
   /** On toggling the expansion */
   onToggle?: OnCollapse;
   /** Whether all are expanded */
-  isExpanded: boolean;
-  /** Flag indicating the expansion in the th is disabled */
-  isHeaderExpandDisabled?: boolean;
+  isCollapsed: boolean;
+  /** Flag indicating the collapse in the th is disabled */
+  isHeaderCollapseDisabled?: boolean;
 }
 
 // Rows Types

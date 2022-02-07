@@ -8,7 +8,7 @@ import { selectable } from '../Table/utils/decorators/selectable';
 import { collapsible } from '../Table/utils/decorators/collapsible';
 import { cellWidth } from './../Table/utils/decorators/cellWidth';
 import { Visibility, classNames } from './../Table/utils/decorators/classNames';
-import { ThInfoType, ThSelectType, ThExpandType, ThSortType, formatterValueType } from '../Table/base/types';
+import { ThInfoType, ThSelectType, ThCollapseType, ThSortType, formatterValueType } from '../Table/base/types';
 import { mergeProps } from '../Table/base/merge-props';
 import { IVisibility } from '../Table/utils/decorators/classNames';
 import { Tooltip } from '@patternfly/react-core/dist/esm/components/Tooltip/Tooltip';
@@ -26,7 +26,7 @@ export interface ThProps
   /** Renders a checkbox select so that all row checkboxes can be selected/deselected */
   select?: ThSelectType;
   /** Renders a chevron so that all row chevrons can be expanded/collapsed */
-  expand?: ThExpandType;
+  collapse?: ThCollapseType;
   /** Formats the header so that its column will be sortable */
   sort?: ThSortType;
   /**
@@ -64,7 +64,7 @@ const ThBase: React.FunctionComponent<ThProps> = ({
   sort = null,
   modifier,
   select = null,
-  expand = null,
+  collapse = null,
   tooltip = '',
   onMouseEnter: onMouseEnterProp = () => {},
   width,
@@ -119,14 +119,14 @@ const ThBase: React.FunctionComponent<ThProps> = ({
         }
       })
     : null;
-  const expandParams = expand
+  const collapseParams = collapse
     ? collapsible(children as IFormatterValueType, {
       column: {
         extraParams: {
-          onCollapse: expand?.onToggle,
+          onCollapse: collapse?.onToggle,
           selectVariant: 'checkbox', //TODO: add new variant?
-          allRowsExpanded: expand.isExpanded,
-          isHeaderExpandDisabled: !!expand.isHeaderExpandDisabled
+          allRowsCollapsed: collapse.isCollapsed,
+          isHeaderCollapseDisabled: !!collapse.isHeaderCollapseDisabled
         }
       }
     })
@@ -135,14 +135,14 @@ const ThBase: React.FunctionComponent<ThProps> = ({
   const visibilityParams = visibility
     ? classNames(...visibility.map((vis: keyof IVisibility) => Visibility[vis]))()
     : null;
-  let transformedChildren = sortParams?.children || selectParams?.children || expandParams?.children || children;
+  let transformedChildren = sortParams?.children || selectParams?.children || collapseParams?.children || children;
   // info can wrap other transformedChildren
   let infoParams = null;
   if (infoProps) {
     infoParams = info(infoProps)(transformedChildren as formatterValueType);
     transformedChildren = infoParams.children;
   }
-  const merged = mergeProps(sortParams, selectParams, expandParams, widthParams, visibilityParams, infoParams);
+  const merged = mergeProps(sortParams, selectParams, collapseParams, widthParams, visibilityParams, infoParams);
   const {
     // ignore the merged children since we transform them ourselves so we can wrap it with info
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
