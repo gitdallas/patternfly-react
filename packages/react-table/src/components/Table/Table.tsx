@@ -61,6 +61,8 @@ export interface TableProps extends OUIAProps {
   onSelect?: OnSelect;
   /** Enables or Disables the ability to select all - this is mutually exclusive with radio button select variant */
   canSelectAll?: boolean;
+  /** Enables or Disables the ability to expand all */
+  canCollapseAll?: boolean;
   /** Flag indicating the select all checkbox is disabled */
   isHeaderSelectDisabled?: boolean;
   /** Specifies the type of the select element variant - can be one of checkbox or radio button */
@@ -135,6 +137,7 @@ export class Table extends React.Component<TableProps, {}> {
     gridBreakPoint: TableGridBreakpoint.gridMd,
     role: 'grid',
     canSelectAll: true,
+    canCollapseAll: true,
     isHeaderSelectDisabled: false,
     selectVariant: 'checkbox',
     ouiaSafe: true,
@@ -166,6 +169,7 @@ export class Table extends React.Component<TableProps, {}> {
       onSort,
       onSelect,
       canSelectAll,
+      canCollapseAll,
       isHeaderSelectDisabled,
       selectVariant,
       sortBy,
@@ -204,6 +208,7 @@ export class Table extends React.Component<TableProps, {}> {
       onSort,
       onSelect,
       canSelectAll: selectVariant === RowSelectVariant.radio ? false : canSelectAll,
+      canCollapseAll: canCollapseAll,
       isHeaderSelectDisabled,
       selectVariant,
       allRowsSelected: onSelect ? this.areAllRowsSelected(rows as IRow[]) : false,

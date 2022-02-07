@@ -107,7 +107,7 @@ const ThBase: React.FunctionComponent<ThProps> = ({
       });
     }
   }
-  const selectParams = false && select
+  const selectParams = select
     ? selectable(children as IFormatterValueType, {
         column: {
           extraParams: {
@@ -119,12 +119,12 @@ const ThBase: React.FunctionComponent<ThProps> = ({
         }
       })
     : null;
-  const expandableParams = expand
+  const expandParams = expand
     ? collapsible(children as IFormatterValueType, {
       column: {
         extraParams: {
           onCollapse: expand?.onToggle,
-          selectVariant: 'checkbox', //TODO: add new variet?
+          selectVariant: 'checkbox', //TODO: add new variant?
           allRowsExpanded: expand.isExpanded,
           isHeaderExpandDisabled: !!expand.isHeaderExpandDisabled
         }
@@ -135,14 +135,14 @@ const ThBase: React.FunctionComponent<ThProps> = ({
   const visibilityParams = visibility
     ? classNames(...visibility.map((vis: keyof IVisibility) => Visibility[vis]))()
     : null;
-  let transformedChildren = sortParams?.children || selectParams?.children || children;
+  let transformedChildren = sortParams?.children || selectParams?.children || expandParams?.children || children;
   // info can wrap other transformedChildren
   let infoParams = null;
   if (infoProps) {
     infoParams = info(infoProps)(transformedChildren as formatterValueType);
     transformedChildren = infoParams.children;
   }
-  const merged = mergeProps(sortParams, selectParams, widthParams, visibilityParams, infoParams);
+  const merged = mergeProps(sortParams, selectParams, expandParams, widthParams, visibilityParams, infoParams);
   const {
     // ignore the merged children since we transform them ourselves so we can wrap it with info
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

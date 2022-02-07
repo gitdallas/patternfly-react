@@ -177,6 +177,7 @@ class ExpandCollapseAllTableDemo extends React.Component {
           rows={rows}
           cells={columns}
           canSelectAll={false}
+          canCollapseAll={true}
         >
           <TableHeader />
           <TableBody />
