@@ -27,9 +27,14 @@ export const collapsible: IFormatter = (
     onCollapse && onCollapse(event, rowIndex, rowData && !rowData.isOpen, rowData, extraData);
   }
 
+  console.log("Data at collapsible.tsx", {
+    rowData: rowData,
+    extraData: extraData
+  });
+
   return {
-    className: rowData.isOpen !== undefined && css(styles.tableToggle),
-    isVisible: !rowData.fullWidth,
+    className: rowData?.isOpen !== undefined && css(styles.tableToggle),
+    isVisible: !(rowData?.fullWidth),
     children: (
       <CollapseColumn
         aria-labelledby={`${rowLabeledBy}${rowIndex} ${expandId}${rowIndex}`}

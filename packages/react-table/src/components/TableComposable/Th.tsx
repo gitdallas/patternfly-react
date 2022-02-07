@@ -121,10 +121,12 @@ const ThBase: React.FunctionComponent<ThProps> = ({
     : null;
   const collapseParams = collapse
     ? collapsible(children as IFormatterValueType, {
+      rowData: {
+        isOpen: collapse.isCollapsed
+      },
       column: {
         extraParams: {
           onCollapse: collapse?.onToggle,
-          selectVariant: 'checkbox', //TODO: add new variant?
           allRowsCollapsed: collapse.isCollapsed,
           isHeaderCollapseDisabled: !!collapse.isHeaderCollapseDisabled
         }

@@ -97,6 +97,14 @@ const mapHeader = (column: ICell, extra: any, key: number, ...props: any) => {
   } else if (typeof title === 'string') {
     dataLabel = title;
   }
+
+  console.log("data at headerUtils.tsx > mapHeader("+ title +")", {
+    extraParams: extra,
+    data: column.data,
+    generatedHeader: generateHeader(column, title),
+    generatedCell: generateCell(column, extra),
+  })
+
   return {
     property:
       (typeof title === 'string' &&
@@ -129,17 +137,21 @@ export interface ISelectTransform {
  * @param {*} extraObject with onSelect callback.
  * @returns {*} object with empty title, tranforms - Array, cellTransforms - Array.
  */
-const selectableTransforms = ({ onSelect, canSelectAll }: ISelectTransform) => [
-  ...(onSelect
-    ? [
-        {
-          title: '',
-          transforms: (canSelectAll && [selectable]) || null,
-          cellTransforms: [selectable]
-        }
-      ]
-    : [])
-];
+const selectableTransforms = ({ onSelect, canSelectAll }: ISelectTransform) => {
+  const t = [
+    ...(onSelect
+      ? [
+          {
+            title: '',
+            transforms: (canSelectAll && [selectable]) || null,
+            cellTransforms: [selectable]
+          }
+        ]
+      : [])
+  ];
+  console.log("headerUtils.tsx > selectableTransforms return value", t);
+  return t;
+};
 
 /**
  * Function to define favorites cell in first column (or second column if rows are also selectable).
