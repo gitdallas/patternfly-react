@@ -38,13 +38,13 @@ export const selectable: ITransform = (
   const customProps = {
     ...(rowId !== -1
       ? {
-          checked: rowData && !!rowData.selected,
-          'aria-label': `Select row ${rowIndex}`
-        }
+        checked: rowData && !!rowData.selected,
+        'aria-label': `Select row ${rowIndex}`
+      }
       : {
-          checked: allRowsSelected,
-          'aria-label': 'Select all rows'
-        }),
+        checked: allRowsSelected,
+        'aria-label': 'Select all rows'
+      }),
     ...(rowData &&
       (rowData.disableCheckbox || rowData.disableSelection) && {
         disabled: true,

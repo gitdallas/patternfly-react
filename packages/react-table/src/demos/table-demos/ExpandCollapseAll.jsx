@@ -1,16 +1,5 @@
 import React from 'react';
 import { Table, TableHeader, TableBody, expandable } from '@patternfly/react-table';
-import {
-  Button,
-  Checkbox,
-  Toolbar,
-  ToolbarGroup,
-  ToolbarItem,
-  ToolbarExpandIconWrapper,
-  ToolbarContent
-} from '@patternfly/react-core';
-import AngleDownIcon from '@patternfly/react-icons/dist/esm/icons/angle-down-icon';
-import AngleRightIcon from '@patternfly/react-icons/dist/esm/icons/angle-right-icon';
 
 class ExpandCollapseAllTableDemo extends React.Component {
   constructor(props) {
@@ -61,9 +50,7 @@ class ExpandCollapseAllTableDemo extends React.Component {
       ]
     };
     this.onCollapse = this.onCollapse.bind(this);
-    this.toggleCollapseAll = this.toggleCollapseAll.bind(this);
     this.onSelect = this.onSelect.bind(this);
-    this.toggleSelectAll = this.toggleSelectAll.bind(this);
   }
 
   onCollapse(event, rowIndex, isOpen) {
@@ -73,8 +60,13 @@ class ExpandCollapseAllTableDemo extends React.Component {
      * Please do not use rowKey as row index for more complex tables.
      * Rather use some kind of identifier like ID passed with each row.
      */
+    const collapseAll = rowIndex === undefined;
     const newRows = Array.from(rows);
-    newRows[rowIndex] = { ...newRows[rowIndex], isOpen };
+    if (collapseAll) {
+      // TODO make all rows isOpen = true
+    } else {
+      newRows[rowIndex] = { ...newRows[rowIndex], isOpen };
+    }
     const updatedExpandedRows = isOpen ? expandedRows + 1 : expandedRows - 1;
     this.setState({
       rows: newRows,
@@ -85,23 +77,6 @@ class ExpandCollapseAllTableDemo extends React.Component {
           : updatedExpandedRows === 0
           ? 'expand'
           : expandCollapseToggle
-    });
-  }
-
-  toggleCollapseAll(collapse) {
-    const expandableRowLength = this.state.rows.filter(row => row.isOpen !== undefined).length;
-    const updatedRows = this.state.rows.map(row =>
-      row.isOpen !== undefined
-        ? {
-            ...row,
-            isOpen: !collapse
-          }
-        : row
-    );
-    this.setState({
-      rows: updatedRows,
-      expandedRows: collapse ? 0 : expandableRowLength,
-      expandCollapseToggle: collapse === false ? 'collapse' : 'expand'
     });
   }
 
@@ -130,53 +105,18 @@ class ExpandCollapseAllTableDemo extends React.Component {
     });
   }
 
-  toggleSelectAll(checked) {
-    this.onSelect(null, checked, -1);
-  }
-
   render() {
-    const { columns, rows, expandCollapseToggle, isChecked } = this.state;
+    const { columns, rows } = this.state;
 
     return (
       <React.Fragment>
-        <Toolbar>
-          <ToolbarContent>
-            <ToolbarGroup variant="icon-button-group">
-              <ToolbarItem variant="expand-all" isAllExpanded={expandCollapseToggle !== 'expand'}>
-                {expandCollapseToggle === 'expand' ? (
-                  <Button variant="plain" aria-label="Expand all" onClick={() => this.toggleCollapseAll(false)}>
-                    <ToolbarExpandIconWrapper>
-                      <AngleRightIcon />
-                    </ToolbarExpandIconWrapper>
-                  </Button>
-                ) : (
-                  <Button variant="plain" aria-label="Collapse all" onClick={() => this.toggleCollapseAll(true)}>
-                    <ToolbarExpandIconWrapper>
-                      <AngleRightIcon />
-                    </ToolbarExpandIconWrapper>
-                  </Button>
-                )}
-              </ToolbarItem>
-              <ToolbarItem>
-                <Checkbox
-                  isChecked={isChecked}
-                  onChange={this.toggleSelectAll}
-                  aria-label="toggle select all checkbox"
-                  id="toggle-select-all"
-                  name="toggle-select-all"
-                  label={isChecked ? 'Deselect all' : 'Select all'}
-                />
-              </ToolbarItem>
-            </ToolbarGroup>
-          </ToolbarContent>
-        </Toolbar>
         <Table
           aria-label="Collapsible table"
           onSelect={this.onSelect}
           onCollapse={this.onCollapse}
           rows={rows}
           cells={columns}
-          canSelectAll={false}
+          canSelectAll={true}
           canCollapseAll={true}
         >
           <TableHeader />

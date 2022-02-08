@@ -127,7 +127,7 @@ const ThBase: React.FunctionComponent<ThProps> = ({
       column: {
         extraParams: {
           onCollapse: collapse?.onToggle,
-          allRowsCollapsed: collapse.isCollapsed,
+          allRowsExpanded: !collapse.isCollapsed,
           isHeaderCollapseDisabled: !!collapse.isHeaderCollapseDisabled
         }
       }

@@ -161,6 +161,17 @@ export class Table extends React.Component<TableProps, {}> {
     );
   };
 
+  areAllExpanded = (rows: IRow[]) => {
+    if (rows === undefined || rows.length === 0) {
+      return false;
+    }
+    return rows.every(
+      row => {
+        return row.isOpen === undefined || row.isOpen
+      }
+    );
+  };
+
   render() {
     const {
       'aria-label': ariaLabel,
@@ -212,6 +223,7 @@ export class Table extends React.Component<TableProps, {}> {
       isHeaderSelectDisabled,
       selectVariant,
       allRowsSelected: onSelect ? this.areAllRowsSelected(rows as IRow[]) : false,
+      allRowsExpanded: onCollapse ? this.areAllExpanded(rows as IRow[]) : false,
       actions,
       actionResolver,
       areActionsDisabled,
