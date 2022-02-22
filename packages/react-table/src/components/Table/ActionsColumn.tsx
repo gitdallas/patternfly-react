@@ -3,7 +3,9 @@ import { Dropdown } from '@patternfly/react-core/dist/esm/components/Dropdown';
 import { OverflowMenu,
   OverflowMenuContent,
   OverflowMenuGroup,
-  OverflowMenuItem } from '@patternfly/react-core/dist/esm/components/OverflowMenu';
+  OverflowMenuControl,
+  OverflowMenuDropdownItem,
+  OverflowMenuItem } from '@pattern fly/react-core/dist/esm/components/OverflowMenu';
 import { KebabToggle } from '@patternfly/react-core/dist/esm/components/Dropdown/KebabToggle';
 import { DropdownItem } from '@patternfly/react-core/dist/esm/components/Dropdown/DropdownItem';
 import { DropdownSeparator } from '@patternfly/react-core/dist/esm/components/Dropdown/DropdownSeparator';
@@ -63,6 +65,12 @@ export class ActionsColumn extends React.Component<ActionsColumnProps, ActionsCo
     });
   };
 
+  onSelect = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  };
+
   onClick = (
     event: React.MouseEvent<any> | React.KeyboardEvent | MouseEvent,
     onClick:
@@ -81,6 +89,15 @@ export class ActionsColumn extends React.Component<ActionsColumnProps, ActionsCo
   render() {
     const { isOpen } = this.state;
     const { items, children, type, dropdownPosition, dropdownDirection, isDisabled, rowData, actionsToggle } = this.props;
+
+    //TODO: something real?
+    const dropdownItems = [
+      <OverflowMenuDropdownItem key="item1" isShared>Item 1</OverflowMenuDropdownItem>,
+      <OverflowMenuDropdownItem key="item2" isShared>Item 2</OverflowMenuDropdownItem>,
+      <OverflowMenuDropdownItem key="item3" isShared>Item 3</OverflowMenuDropdownItem>,
+      <OverflowMenuDropdownItem key="item4" isShared>Item 4</OverflowMenuDropdownItem>,
+      <OverflowMenuDropdownItem key="item5" isShared>Item 5</OverflowMenuDropdownItem>
+    ]
 
     const actionsToggleClone = actionsToggle ? (
       actionsToggle({ onToggle: this.onToggle, isOpen, isDisabled })
@@ -136,7 +153,7 @@ export class ActionsColumn extends React.Component<ActionsColumnProps, ActionsCo
           isPlain
           {...(rowData && rowData.actionProps)}
         />}
-        {type === "overflow" && <OverflowMenu breakpoint='md'>
+        {type === "overflow" && <OverflowMenu breakpoint='xl'>
           <OverflowMenuContent>
             <OverflowMenuGroup>
             {items.map(({ title, itemKey, onClick, isSeparator, ...props }, ) => 
@@ -148,6 +165,15 @@ export class ActionsColumn extends React.Component<ActionsColumnProps, ActionsCo
             )}
             </OverflowMenuGroup>
           </OverflowMenuContent>
+          <OverflowMenuControl>
+          <Dropdown
+            onSelect={this.onSelect}
+            toggle={<KebabToggle onToggle={this.onToggle} />}
+            isOpen={isOpen}
+            isPlain
+            dropdownItems={dropdownItems}
+          />
+        </OverflowMenuControl>
         </OverflowMenu>}
         {children}
       </React.Fragment>

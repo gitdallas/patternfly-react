@@ -321,7 +321,13 @@ class ColumnManagementAction extends React.Component {
         title: 'Action'
       },
       {
-        isSeparator: true
+        title: <a href="#">Separated link</a>
+      },
+      {
+        title: <a href="#">Link</a>
+      },
+      {
+        title: 'Action'
       },
       {
         title: <a href="#">Separated link</a>

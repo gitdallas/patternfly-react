@@ -28,7 +28,7 @@ class OverflowTableDemo extends React.Component {
         'Pull requests',
         'Workspaces',
         'Last Commit',
-        ''
+        'Overflow actions'
       ],
       rows: [
         {
