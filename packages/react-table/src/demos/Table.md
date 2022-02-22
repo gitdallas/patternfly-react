@@ -267,6 +267,11 @@ class BulkSelectTableDemo extends React.Component {
 ```js file="table-demos/ExpandCollapseAll.jsx"
 ```
 
+### Overflow
+
+```js file="table-demos/Overflow.jsx"
+```
+
 ### Column management
 
 ```js

@@ -67,6 +67,8 @@ export interface TableProps extends OUIAProps {
   isHeaderSelectDisabled?: boolean;
   /** Specifies the type of the select element variant - can be one of checkbox or radio button */
   selectVariant?: 'checkbox' | 'radio';
+  /** Specifies the type of action variant - can be either dropdown or overflow */
+  actionVariant?: 'dropdown' | 'overflow';
   /** An optional alternative aria label for the expand collapse all table header */
   collapseAllAriaLabel?: string;
   /** Function triggered when a row's inline edit is activated. Adds a column for inline edit when present. */
@@ -146,6 +148,7 @@ export class Table extends React.Component<TableProps, {}> {
     canCollapseAll: true,
     isHeaderSelectDisabled: false,
     selectVariant: 'checkbox',
+    actionVariant: 'dropdown',
     collapseAllAriaLabel: '',
     ouiaSafe: true,
     isStickyHeader: false,
@@ -186,6 +189,7 @@ export class Table extends React.Component<TableProps, {}> {
       canCollapseAll,
       isHeaderSelectDisabled,
       selectVariant,
+      actionVariant,
       collapseAllAriaLabel,
       sortBy,
       children,
@@ -226,6 +230,7 @@ export class Table extends React.Component<TableProps, {}> {
       canCollapseAll,
       isHeaderSelectDisabled,
       selectVariant,
+      actionVariant,
       collapseAllAriaLabel,
       allRowsSelected: onSelect ? this.areAllRowsSelected(rows as IRow[]) : false,
       allRowsExpanded: onCollapse ? this.areAllExpanded(rows as IRow[]) : false,

@@ -104,6 +104,7 @@ export interface IColumn {
     rowLabeledBy?: string;
     expandId?: string;
     contentId?: string;
+    actionVariant?: 'dropdown' | 'overflow';
     dropdownPosition?: DropdownPosition;
     dropdownDirection?: DropdownDirection;
     actionsToggle?: (props: CustomActionsToggleProps) => React.ReactNode;

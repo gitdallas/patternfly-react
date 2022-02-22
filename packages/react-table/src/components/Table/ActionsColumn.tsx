@@ -1,5 +1,9 @@
 import * as React from 'react';
 import { Dropdown } from '@patternfly/react-core/dist/esm/components/Dropdown';
+import { OverflowMenu,
+  OverflowMenuContent,
+  OverflowMenuGroup,
+  OverflowMenuItem } from '@patternfly/react-core/dist/esm/components/OverflowMenu';
 import { KebabToggle } from '@patternfly/react-core/dist/esm/components/Dropdown/KebabToggle';
 import { DropdownItem } from '@patternfly/react-core/dist/esm/components/Dropdown/DropdownItem';
 import { DropdownSeparator } from '@patternfly/react-core/dist/esm/components/Dropdown/DropdownSeparator';
@@ -22,6 +26,7 @@ export interface ActionsColumnProps {
   children?: React.ReactNode;
   items: IAction[];
   isDisabled?: boolean;
+  type?: 'dropdown' | 'overflow';
   dropdownPosition?: DropdownPosition;
   dropdownDirection?: DropdownDirection;
   rowData?: IRowData;
@@ -39,6 +44,7 @@ export class ActionsColumn extends React.Component<ActionsColumnProps, ActionsCo
   static defaultProps = {
     children: null as React.ReactNode,
     items: [] as IAction[],
+    type: 'dropdown',
     dropdownPosition: DropdownPosition.right,
     dropdownDirection: DropdownDirection.down,
     rowData: {} as IRowData,
@@ -74,7 +80,7 @@ export class ActionsColumn extends React.Component<ActionsColumnProps, ActionsCo
 
   render() {
     const { isOpen } = this.state;
-    const { items, children, dropdownPosition, dropdownDirection, isDisabled, rowData, actionsToggle } = this.props;
+    const { items, children, type, dropdownPosition, dropdownDirection, isDisabled, rowData, actionsToggle } = this.props;
 
     const actionsToggleClone = actionsToggle ? (
       actionsToggle({ onToggle: this.onToggle, isOpen, isDisabled })
@@ -102,7 +108,7 @@ export class ActionsColumn extends React.Component<ActionsColumnProps, ActionsCo
               React.cloneElement(title as React.ReactElement, { onClick, isDisabled, ...props })
             )
           )}
-        <Dropdown
+        {type === "dropdown" && <Dropdown
           toggle={actionsToggleClone}
           position={dropdownPosition}
           direction={dropdownDirection}
@@ -129,7 +135,20 @@ export class ActionsColumn extends React.Component<ActionsColumnProps, ActionsCo
             )}
           isPlain
           {...(rowData && rowData.actionProps)}
-        />
+        />}
+        {type === "overflow" && <OverflowMenu breakpoint='md'>
+          <OverflowMenuContent>
+            <OverflowMenuGroup>
+            {items.map(({ title, itemKey, onClick, isSeparator, ...props }, ) => 
+              <OverflowMenuItem
+                onClick={event => {
+                  this.onClick(event, onClick);
+                  this.onToggle(!isOpen);
+                }}>{title}</OverflowMenuItem>
+            )}
+            </OverflowMenuGroup>
+          </OverflowMenuContent>
+        </OverflowMenu>}
         {children}
       </React.Fragment>
     );
