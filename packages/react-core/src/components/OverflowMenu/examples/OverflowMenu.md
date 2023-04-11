@@ -13,6 +13,7 @@ propComponents:
   ]
 ---
 
+import { Link } from '@reach/router';
 import AlignLeftIcon from '@patternfly/react-icons/dist/esm/icons/align-left-icon';
 import AlignCenterIcon from '@patternfly/react-icons/dist/esm/icons/align-center-icon';
 import AlignRightIcon from '@patternfly/react-icons/dist/esm/icons/align-right-icon';
@@ -78,6 +79,112 @@ class SimpleOverflowMenu extends React.Component {
       <OverflowMenu breakpoint="lg">
         <OverflowMenuContent>
           <OverflowMenuItem>Item</OverflowMenuItem>
+          <OverflowMenuItem>Item</OverflowMenuItem>
+          <OverflowMenuGroup>
+            <OverflowMenuItem>Item</OverflowMenuItem>
+            <OverflowMenuItem>Item</OverflowMenuItem>
+            <OverflowMenuItem>Item</OverflowMenuItem>
+          </OverflowMenuGroup>
+        </OverflowMenuContent>
+        <OverflowMenuControl>
+          <Dropdown
+            onSelect={this.onSelect}
+            toggle={(toggleRef) => (
+              <MenuToggle
+                ref={toggleRef}
+                aria-label="Simple example overflow menu"
+                variant="plain"
+                onClick={this.onToggle}
+                isExpanded={isOpen}
+              >
+                <EllipsisVIcon />
+              </MenuToggle>
+            )}
+            isOpen={isOpen}
+            onOpenChange={(isOpen) =>
+              this.setState({
+                isOpen
+              })
+            }
+          >
+            <DropdownList>{dropdownItems}</DropdownList>
+          </Dropdown>
+        </OverflowMenuControl>
+      </OverflowMenu>
+    );
+  }
+}
+```
+
+### With a rendered OverflowMenuItem
+
+```js
+import React from 'react';
+import {
+  OverflowMenu,
+  OverflowMenuControl,
+  OverflowMenuContent,
+  OverflowMenuGroup,
+  OverflowMenuItem,
+  OverflowMenuDropdownItem,
+  MenuToggle,
+  Dropdown,
+  DropdownList
+} from '@patternfly/react-core';
+import { Link } from '@reach/router';
+import EllipsisVIcon from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
+
+class RenderedOverflowMenuItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpen: false
+    };
+    this.onToggle = () => {
+      this.setState({
+        isOpen: !this.state.isOpen
+      });
+    };
+    this.onSelect = (event) => {
+      this.setState({
+        isOpen: !this.state.isOpen
+      });
+    };
+  }
+
+  render() {
+    const { isOpen } = this.state;
+    const dropdownItems = [
+      <OverflowMenuDropdownItem itemId={0} key="item1" isShared
+        render={( props ) => (
+          <Link to="#overflowmenuitem" {...props}>
+            Rendered Link
+          </Link>
+        )}
+      />,
+      <OverflowMenuDropdownItem itemId={1} key="item2" isShared>
+        Item 2
+      </OverflowMenuDropdownItem>,
+      <OverflowMenuDropdownItem itemId={2} key="item3" isShared>
+        Item 3
+      </OverflowMenuDropdownItem>,
+      <OverflowMenuDropdownItem itemId={3} key="item4" isShared>
+        Item 4
+      </OverflowMenuDropdownItem>,
+      <OverflowMenuDropdownItem itemId={5} key="item5" isShared>
+        Item 5
+      </OverflowMenuDropdownItem>
+    ];
+    return (
+      <OverflowMenu breakpoint="lg">
+        <OverflowMenuContent>
+          <OverflowMenuItem
+            render={( props ) => (
+              <Link to="#overflowmenuitem" {...props}>
+                Item
+              </Link>
+            )}
+          />
           <OverflowMenuItem>Item</OverflowMenuItem>
           <OverflowMenuGroup>
             <OverflowMenuItem>Item</OverflowMenuItem>

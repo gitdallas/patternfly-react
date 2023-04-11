@@ -10,16 +10,20 @@ export interface OverflowMenuItemProps extends React.HTMLProps<HTMLDivElement> {
   className?: string;
   /** Modifies the overflow menu item visibility */
   isPersistent?: boolean;
+  /** A render function to render the component inside the menu item. */
+  render?: (props: {className: string}) => React.ReactNode;
 }
 
 export const OverflowMenuItem: React.FunctionComponent<OverflowMenuItemProps> = ({
   className,
   children,
-  isPersistent = false
+  isPersistent = false,
+  render,
 }: OverflowMenuItemProps) => (
   <OverflowMenuContext.Consumer>
     {value =>
       (isPersistent || !value.isBelowBreakpoint) && (
+        render ? render({className: css(styles.overflowMenuItem, className)}) :
         <div className={css(styles.overflowMenuItem, className)}> {children} </div>
       )
     }
