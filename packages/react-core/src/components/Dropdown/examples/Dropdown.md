@@ -7,6 +7,7 @@ propComponents: ['Dropdown', DropdownGroup, 'DropdownItem', 'DropdownList', 'Men
 beta: true
 ---
 
+import { Link } from '@reach/router';
 import EllipsisVIcon from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
 
 ## Examples
@@ -25,6 +26,12 @@ The following example shows a few different states of dropdown items. As shown i
 This example also uses a `<Divider>` which passes in `key=”separator”` to split the menu into 2 sections with a horizontal line.
 
 ```ts file="./DropdownBasic.tsx"
+
+```
+
+### DropdownItem rendered
+
+```ts file="./DropdownItemRendered.tsx"
 
 ```
 
