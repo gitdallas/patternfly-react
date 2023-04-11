@@ -15,6 +15,10 @@ import { canUseDOM } from '../../helpers/util';
 import { useIsomorphicLayoutEffect } from '../../helpers/useIsomorphicLayout';
 import { GenerateId } from '../../helpers/GenerateId/GenerateId';
 
+export interface MenuItemRenderArgs {
+  className: string,
+}
+
 export interface MenuItemProps extends Omit<React.HTMLProps<HTMLLIElement>, 'onClick'> {
   /** Content rendered inside the menu list item. */
   children?: React.ReactNode;
@@ -38,6 +42,8 @@ export interface MenuItemProps extends Omit<React.HTMLProps<HTMLLIElement>, 'onC
   onClick?: (event?: any) => void;
   /** Component used to render the menu item */
   component?: React.ElementType<any> | React.ComponentType<any>;
+  /** A render function to render the component inside the menu item. */
+  render?: (props: MenuItemRenderArgs) => React.ReactNode;
   /** Render item as disabled option */
   isDisabled?: boolean;
   /** Render item with icon */
@@ -93,6 +99,7 @@ const MenuItemBase: React.FunctionComponent<MenuItemProps> = ({
   description = null as string,
   onClick = () => {},
   component = 'button',
+  render,
   isDisabled = false,
   isExternalLink = false,
   isSelected = null,
@@ -299,6 +306,7 @@ const MenuItemBase: React.FunctionComponent<MenuItemProps> = ({
     }
   };
   const isSelectMenu = menuRole === 'listbox';
+  const componentClassName = css(styles.menuItem, getIsSelected() && !hasCheckbox && styles.modifiers.selected, className);
 
   return (
     <li
@@ -319,12 +327,17 @@ const MenuItemBase: React.FunctionComponent<MenuItemProps> = ({
       {...(hasCheckbox && { 'aria-label': ariaLabel })}
       {...props}
     >
-      <GenerateId>
+      {render && render({
+        className: componentClassName,
+        ariaCurrent: getAriaCurrent(),
+        ...additionalProps
+      })}
+      {!render && <GenerateId>
         {(randomId) => (
           <Component
             id={id}
             tabIndex={-1}
-            className={css(styles.menuItem, getIsSelected() && !hasCheckbox && styles.modifiers.selected, className)}
+            className={componentClassName}
             aria-current={getAriaCurrent()}
             {...(!hasCheckbox && { disabled: isDisabled, 'aria-label': ariaLabel })}
             {...(!hasCheckbox && !flyoutMenu && { role: isSelectMenu ? 'option' : 'menuitem' })}
@@ -382,7 +395,7 @@ const MenuItemBase: React.FunctionComponent<MenuItemProps> = ({
             )}
           </Component>
         )}
-      </GenerateId>
+      </GenerateId>}
       {flyoutVisible && (
         <MenuContext.Provider value={{ disableHover }}>
           <FlyoutContext.Provider value={{ direction: flyoutXDirection }}>{flyoutMenu}</FlyoutContext.Provider>

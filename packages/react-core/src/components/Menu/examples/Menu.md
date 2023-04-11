@@ -12,6 +12,7 @@ Dropdown as DropdownDeprecated,
 DropdownItem as DropdownItemDeprecated,
 BadgeToggle
 } from '@patternfly/react-core/deprecated';
+import { Link } from '@reach/router';
 import BarsIcon from '@patternfly/react-icons/dist/esm/icons/bars-icon';
 import ClipboardIcon from '@patternfly/react-icons/dist/esm/icons/clipboard-icon';
 import CodeBranchIcon from '@patternfly/react-icons/dist/esm/icons/code-branch-icon';
@@ -34,6 +35,12 @@ A menu may contain multiple variations of `<MenuItem>` components. The following
 - Use the `isPlain` property to remove the outer box shadow and style the menu plainly instead.
 
 ```ts file="MenuBasic.tsx"
+
+```
+
+### A rendered component menuItem
+
+```ts file="MenuItemRender.tsx"
 
 ```
 
