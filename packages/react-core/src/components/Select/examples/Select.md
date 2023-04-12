@@ -7,6 +7,7 @@ propComponents: ['Select', 'SelectOption', 'SelectGroup', 'SelectList', 'MenuTog
 ouia: true
 ---
 
+import { Link } from '@reach/router';
 import TimesIcon from '@patternfly/react-icons/dist/esm/icons/times-icon';
 
 ## Examples
@@ -14,6 +15,11 @@ import TimesIcon from '@patternfly/react-icons/dist/esm/icons/times-icon';
 ### Single
 
 ```ts file="./SelectBasic.tsx"
+```
+
+### Single with rendered option
+
+```ts file="./SelectRenderedOption.tsx"
 ```
 
 ### Grouped single
